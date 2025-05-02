@@ -7,7 +7,7 @@ _A guide on how to install the tools needed for running the project._
 
 You should have a mongoDB installed previously if not you can install it in https://www.mongodb.com/docs/manual/administration/install-community/ 
 
-## Instalation
+## Installation
 
 In order to install the project you must make:
 ```bash
