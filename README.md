@@ -5,7 +5,7 @@ This an api ceated to manage data related with a Bookstore. It was made for acad
 
 _A guide on how to install the tools needed for running the project._
 
-You should have a mongoDB installed previously if not you can install it in https://www.mongodb.com/docs/manual/administration/install-community/ 
+You should have mongoDB installed previously if not you can install it in [installatio Mongo] (https://www.mongodb.com/docs/manual/administration/install-community/) 
 
 ## Installation
 
