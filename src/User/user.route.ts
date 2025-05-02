@@ -14,26 +14,45 @@ import { Auth, AuthRequest } from "../Midlleware/auth.midlleware.js";
 // crear el enrutador
 const users = Router();
 
+type sessionType = {
+   Ip: string;
+   token: string;
+   entryDate: number;
+}
+
 // inicializa el token en vacio
-let token = "";
+let tokens: sessionType[] = [];
 
 // declaracion de endpoints
 const loginUser: any = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   const user = (await login(email, password))[0] as userType;
   if (user) {
-    token = jwt.sign(
-      { email, rol: user.rol, permissions: user.permissions },
-      JWT_SECRET as string,
-      {
-        expiresIn: "1h",
-      }
-    );
+    const clientIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+    let ip;
+
+    if (Array.isArray(clientIp)) {
+       ip = clientIp[0];
+    } else {
+      ip = clientIp || "127.0.0.1"
+    }
+    
+    tokens.push({
+      Ip: ip,
+      entryDate: Date.now(),
+      token: jwt.sign(
+        { email, rol: user.rol, permissions: user.permissions },
+        JWT_SECRET as string,
+        {
+          expiresIn: "1h",
+        }
+      ),
+    });
+    console.log(tokens)
     return res.json(user);
   } else {
-    return res.status(404).json({error:"usuario no encontrado"});
+    return res.status(404).json({ error: "usuario no encontrado" });
   }
-
 };
 
 const registerAUser: any = async (req: Request, res: Response) => {
@@ -154,5 +173,5 @@ users.post("/API/users", loginUser);
 users.post("/API/users/create", registerAUser);
 users.patch("/API/users/:emailSearched", Auth(), editAUser);
 users.delete("/API/users/:email", Auth(), killAUser);
-export { token };
+export { tokens };
 export default users;
