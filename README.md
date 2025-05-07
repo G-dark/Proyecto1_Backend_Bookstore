@@ -45,7 +45,7 @@ npm run dev
 Read - login - Post
 baseURl/API/users
 
----valid input 
+---valid input </br>
 
 {</br>
 "email":"antonio@hotmail.com",</br>
@@ -55,7 +55,7 @@ baseURl/API/users
 Create - Post
 baseURl/API/users/create
 
----valid input 
+---valid input </br>
 { </br>
     "name": "Antonio",</br>
     "email": "antonio@hotmail.com",</br>
@@ -73,7 +73,7 @@ baseURl/API/users/:email
 Update - Patch 
 baseURl/API/users/:email
 
----valid input 
+---valid input </br>
 {</br>
     "name": "Antonio",</br>
     "email": "antonio@hotmail.com",</br>
@@ -97,7 +97,7 @@ baseURl/API/books/?autor=Gabriel Garcia Marquez&nombre=Cien años de soledad&dis
 Create - Post
 baseURl/API/books
 
----valid input 
+---valid input </br>
 {</br>
   "publishDate": "1953-03-05",</br>
   "title": "Fahrenheit 451",</br>
@@ -106,7 +106,9 @@ baseURl/API/books
   "editorial": "Planeta",</br>
   "amount": 2000,</br>
   "availableAmount": 50,</br>
-  "description": "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury, publicada en 1953 y considerada una de sus mejores obras.​ La novela presenta una sociedad estadounidense del futuro en la que los libros están prohibidos y existen «bomberos» que queman cualquiera que encuentren.​",</br>
+  "description": "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury, publicada en 1953 y </br>
+  considerada una de sus mejores obras.​ La novela presenta una sociedad estadounidense del futuro en la que los libros </br>
+  están prohibidos y existen «bomberos» que queman cualquiera que encuentren.​",</br>
   "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsB_fnDOrkPWxstj7bpcajLhTAO2eYL7FzAQ&s"</br>
 }</br>
 
@@ -117,8 +119,9 @@ Update - Patch
 baseURl/API/books/:id
 
 fields that are not going to be updated can be omitted, for example: 
----valid input 
-{
-  "publishDate": "1952-03-05",
-  "description": "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury, publicada en 1953 y considerada una de sus mejores obras.​"
-}
+---valid input </br>
+{ </br>
+  "publishDate": "1952-03-05", </br>
+  "description": "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury,</br>
+  publicada en 1953 y considerada una de sus mejores obras.​"</br>
+}</br>
