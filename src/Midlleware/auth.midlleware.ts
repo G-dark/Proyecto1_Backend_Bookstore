@@ -16,16 +16,23 @@ export const Auth: any = () => {
       ip = clientIp || "127.0.0.1";
     }
     let token_acc;
-    if (tokens.length <= 1) {
-     token_acc = tokens[0].token;
+
+    const authHeader = req.headers["authorization"];
+
+    if (authHeader) {
+      token_acc = authHeader.split(" ")[1];
     } else {
-      token_acc = tokens
-        .filter((item) => {
-          return item.Ip == ip;
-        })
-        .sort((item1, item2) => {
-          return item2.entryDate - item1.entryDate;
-        })[0].token;
+      if (tokens.length <= 1 && tokens.length > 0) {
+        token_acc = tokens[0].token;
+      } else {
+        token_acc = tokens
+          .filter((item) => {
+            return item.Ip == ip;
+          })
+          .sort((item1, item2) => {
+            return item2.entryDate - item1.entryDate;
+          })[0].token;
+      }
     }
 
     if (!token_acc) {

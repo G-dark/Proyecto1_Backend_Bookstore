@@ -36,20 +36,22 @@ const loginUser: any = async (req: Request, res: Response) => {
     } else {
       ip = clientIp || "127.0.0.1"
     }
-    
+
+    const token = jwt.sign(
+      { email, rol: user.rol, permissions: user.permissions },
+      JWT_SECRET as string,
+      {
+        expiresIn: "1h",
+      }
+    );
+
     tokens.push({
       Ip: ip,
       entryDate: Date.now(),
-      token: jwt.sign(
-        { email, rol: user.rol, permissions: user.permissions },
-        JWT_SECRET as string,
-        {
-          expiresIn: "1h",
-        }
-      ),
+      token: token,
     });
-    console.log(tokens)
-    return res.json(user);
+    
+    return res.json({user, token});
   } else {
     return res.status(404).json({ error: "usuario no encontrado" });
   }
