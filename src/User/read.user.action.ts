@@ -1,7 +1,7 @@
 import  User  from "./user.model.js";
 import {userType} from "./user.model.js";
 import bcrypt from "bcryptjs";
-
+import { PEPPER } from "../App/config.js";
 
 export const thisUserExists = async(email:string):Promise<any> => {
   try{
@@ -27,7 +27,7 @@ const loginUser = async (
       if (user.length === 0) {
         return { error: "No se encontraron usuarios" };
       }
-      const isMatch = await bcrypt.compare(password, user[0].password);
+      const isMatch = await bcrypt.compare(password + PEPPER, user[0].password);
 
       if(isMatch){
         return user;
