@@ -46,16 +46,17 @@ Read - login - Post
 baseURl/API/users
 
 ---valid input </br>
-
+```javascript
 {</br>
 "email":"antonio@hotmail.com",</br>
 "password":"anto123"</br>
 }</br>
-
+```
 Create - Post
 baseURl/API/users/create
 
 ---valid input </br>
+```javascript
 { </br>
     "name": "Antonio",</br>
     "email": "antonio@hotmail.com",</br>
@@ -66,7 +67,7 @@ baseURl/API/users/create
     "phone": "+3145645664566",</br>
     "address": "Cll 23 Kra 34 Barranquilla"</br>
 }</br>
-
+```
 Delete - Delete
 baseURl/API/users/:email
 
@@ -74,6 +75,7 @@ Update - Patch
 baseURl/API/users/:email
 
 ---valid input </br>
+```javascript
 {</br>
     "name": "Antonio",</br>
     "email": "antonio@hotmail.com",</br>
@@ -84,7 +86,7 @@ baseURl/API/users/:email
     "phone": "+3145645664566",</br>
     "address": "Cll 23 Kra 34 Barranquilla"</br>
 }</br>
-
+```
 # Books
 
 Read - Get by id
@@ -98,6 +100,7 @@ Create - Post
 baseURl/API/books
 
 ---valid input </br>
+```javascript
 {</br>
   "publishDate": "1953-03-05",</br>
   "title": "Fahrenheit 451",</br>
@@ -112,6 +115,7 @@ baseURl/API/books
   "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsB_fnDOrkPWxstj7bpcajLhTAO2eYL7FzAQ&s"</br>
 }</br>
 
+```
 Delete - Delete
 baseURl/API/books/:id
 
@@ -120,8 +124,10 @@ baseURl/API/books/:id
 
 fields that are not going to be updated can be omitted, for example: 
 ---valid input </br>
+```javascript
 { </br>
   "publishDate": "1952-03-05", </br>
   "description": "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury,</br>
   publicada en 1953 y considerada una de sus mejores obras.​"</br>
 }</br>
+```
