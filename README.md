@@ -62,7 +62,7 @@ baseURl/API/users/create
     "email": "antonio@hotmail.com",
     "password": "anto123",
     "rol": "admin",
-    "permissions":  ["update someoneelse",  "delete someoneelse",] ,
+    "permissions":  ["update someoneelse",  "delete someoneelse"] ,
     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSA1zygA3rubv-VK0DrVcQ02Po79kJhXo_A&s",
     "phone": "+3145645664566",
     "address": "Cll 23 Kra 34 Barranquilla"
@@ -109,7 +109,7 @@ baseURl/API/books
   "editorial": "Planeta",
   "amount": 2000,
   "availableAmount": 50,
-  "description":  "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury, publicada en 1953 y considerada una de...",
+  "description":  "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury, publicada en 1953...",
   "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsB_fnDOrkPWxstj7bpcajLhTAO2eYL7FzAQ&s"
 }
 
