@@ -50,7 +50,7 @@ const loginUser: any = async (req: Request, res: Response) => {
       entryDate: Date.now(),
       token: token,
     });
-    
+
     return res.json({user, token});
   } else {
     return res.status(404).json({ error: "usuario no encontrado" });
@@ -113,7 +113,7 @@ const editAUser: any = async (req: AuthRequest, res: Response) => {
           return perm != "update someoneelse";
         }))
     ) {
-      return res.status(401).json({ failed: "permisos insuficientes" });
+      return res.status(401).json({ error: "permisos insuficientes" });
     }
 
     if (
@@ -127,7 +127,7 @@ const editAUser: any = async (req: AuthRequest, res: Response) => {
       return res.json(result);
     }
   } else {
-    return res.status(401).json({ failed: "permisos insuficientes" });
+    return res.status(401).json({ error: "permisos insuficientes" });
   }
 };
 
@@ -153,7 +153,7 @@ const killAUser: any = async (req: AuthRequest, res: Response) => {
           return perm != "delete someoneelse";
         }))
     ) {
-      return res.status(401).json({ failed: "permisos insuficientes" });
+      return res.status(401).json({ error: "permisos insuficientes" });
     }
 
     if (
@@ -167,7 +167,7 @@ const killAUser: any = async (req: AuthRequest, res: Response) => {
       return res.json(result);
     }
   } else {
-    return res.status(401).json({ failed: "permisos insuficientes" });
+    return res.status(401).json({ error: "permisos insuficientes" });
   }
 };
 

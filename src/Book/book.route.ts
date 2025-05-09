@@ -14,8 +14,8 @@ const getBookByID: any = async (req: Request, res: Response) => {
   const result = await getAllBooks(id);
   return res.json(result);
 };
+
 const getBooksByAmount: any = async (req: Request, res: Response) => {
-  console.log(req.query);
 
   const { genero, fechaPublicacion, editorial, autor, nombre, disponibilidad } =
     req.query;
@@ -67,7 +67,7 @@ const makeABook: any = async (req: AuthRequest, res: Response) => {
           return perm != "create books";
         }))
     ) {
-      return res.status(401).json({ failed: "permisos insuficientes" });
+      return res.status(401).json({ error: "permisos insuficientes" });
     }
 
     if (
@@ -80,7 +80,7 @@ const makeABook: any = async (req: AuthRequest, res: Response) => {
       return res.json(result);
     }
   } else {
-    return res.status(401).json({ failed: "permisos insuficientes" });
+    return res.status(401).json({ error: "permisos insuficientes" });
   }
 };
 
@@ -122,7 +122,7 @@ const editABook: any = async (req: AuthRequest, res: Response) => {
           return perm != "update books";
         }))
     ) {
-      return res.status(401).json({ failed: "permisos insuficientes" });
+      return res.status(401).json({ error: "permisos insuficientes" });
     }
 
     if (
@@ -135,7 +135,7 @@ const editABook: any = async (req: AuthRequest, res: Response) => {
       return res.json(result);
     }
   } else {
-    return res.status(401).json({ failed: "permisos insuficientes" });
+    return res.status(401).json({ error: "permisos insuficientes" });
   }
 };
 
@@ -151,7 +151,7 @@ const killABook: any = async (req: AuthRequest, res: Response) => {
           return perm != "delete books";
         }))
     ) {
-      return res.status(401).json({ failed: "permisos insuficientes" });
+      return res.status(401).json({ error: "permisos insuficientes" });
     }
 
     if (
@@ -164,7 +164,7 @@ const killABook: any = async (req: AuthRequest, res: Response) => {
       return res.json(result);
     }
   } else {
-    return res.status(401).json({ failed: "permisos insuficientes" });
+    return res.status(401).json({ error: "permisos insuficientes" });
   }
 };
 

@@ -4,7 +4,7 @@ const deleteUser = async (email:string):Promise<any> => {
   try {
     const res = await User.updateOne(
       { email: email},
-      { email: '_'+email ,deleted: true, deleteAt: new Date() }
+      { email: email ,deleted: true, deleteAt: new Date() }
     );
     if (res.modifiedCount === 0) {
       return { error: "No se pudo eliminar usuario" };
