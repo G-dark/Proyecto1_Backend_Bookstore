@@ -34,7 +34,7 @@ npm run dev
 
 * [Express](https://expressjs.com/es/) - Web Enviroment Used.
 * [Typescript](https://www.typescriptlang.org) - Language.
-* [MongoDB](https://www.typescriptlang.org) - DB engine.
+* [MongoDB](https://www.mongodb.com) - DB engine.
 * [JWT](https://jwt.io) - Authentication .
 
 
@@ -109,7 +109,7 @@ baseURl/API/books
   "editorial": "Planeta",
   "amount": 2000,
   "availableAmount": 50,
-  "description":  "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury, publicada en 1953 y considerada una de sus mejores obras.\nLa novela presenta una sociedad estadounidense del futuro en la que los libros están prohibidos y existen «bomberos» que queman cualquiera que encuentren.",
+  "description":  "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury, publicada en 1953 y considerada una de...",
   "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsB_fnDOrkPWxstj7bpcajLhTAO2eYL7FzAQ&s"
 }
 
@@ -125,7 +125,6 @@ fields that are not going to be updated can be omitted, for example:
 ```json
 { 
   "publishDate": "1952-03-05", 
-  "description": "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury,\n
-                  publicada en 1953 y considerada una de sus mejores obras.​"
+  "description": "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury,..."
 }
 ```
