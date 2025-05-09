@@ -62,7 +62,7 @@ baseURl/API/users/create
     "email": "antonio@hotmail.com",
     "password": "anto123",
     "rol": "admin",
-    "permissions":  \["update someoneelse",  "delete someoneelse",] ,
+    "permissions":  ["update someoneelse",  "delete someoneelse",] ,
     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSA1zygA3rubv-VK0DrVcQ02Po79kJhXo_A&s",
     "phone": "+3145645664566",
     "address": "Cll 23 Kra 34 Barranquilla"
@@ -81,7 +81,7 @@ baseURl/API/users/:email
     "email": "antonio@hotmail.com",
     "password": "anto321",
     "rol": "admin",
-    "permissions":  \["update someoneelse",  "delete someoneelse", "create"] ,
+    "permissions":  ["update someoneelse",  "delete someoneelse", "create"] ,
     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSA1zygA3rubv-VK0DrVcQ02Po79kJhXo_A&s",
     "phone": "+3145645664566",
     "address": "Cll 23 Kra 34 Barranquilla"
@@ -110,8 +110,8 @@ baseURl/API/books
   "amount": 2000,
   "availableAmount": 50,
   "description": "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury, publicada en 1953 y 
-  considerada una de sus mejores obras.​ La novela presenta una sociedad estadounidense del futuro en la que los libros 
-  están prohibidos y existen «bomberos» que queman cualquiera que encuentren.​",
+                  considerada una de sus mejores obras.​ La novela presenta una sociedad estadounidense del futuro en la que los libros 
+                  están prohibidos y existen «bomberos» que queman cualquiera que encuentren.​",
   "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsB_fnDOrkPWxstj7bpcajLhTAO2eYL7FzAQ&s"
 }
 
@@ -128,6 +128,6 @@ fields that are not going to be updated can be omitted, for example:
 { 
   "publishDate": "1952-03-05", 
   "description": "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury,
-  publicada en 1953 y considerada una de sus mejores obras.​"
+                  publicada en 1953 y considerada una de sus mejores obras.​"
 }
 ```
