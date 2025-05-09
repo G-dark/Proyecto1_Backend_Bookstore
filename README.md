@@ -46,7 +46,7 @@ Read - login - Post
 baseURl/API/users
 
 ---valid input </br>
-```javascript
+```json
 {
 "email":"antonio@hotmail.com",
 "password":"anto123"
@@ -56,7 +56,7 @@ Create - Post
 baseURl/API/users/create
 
 ---valid input </br>
-```javascript
+```json
 { 
     "name": "Antonio",
     "email": "antonio@hotmail.com",
@@ -75,7 +75,7 @@ Update - Patch
 baseURl/API/users/:email
 
 ---valid input </br>
-```javascript
+```json
 {
     "name": "Antonio",
     "email": "antonio@hotmail.com",
@@ -100,7 +100,7 @@ Create - Post
 baseURl/API/books
 
 ---valid input </br>
-```javascript
+```json
 {
   "publishDate": "1953-03-05",
   "title": "Fahrenheit 451",
@@ -124,7 +124,7 @@ baseURl/API/books/:id
 
 fields that are not going to be updated can be omitted, for example: 
 ---valid input </br>
-```javascript
+```json
 { 
   "publishDate": "1952-03-05", 
   "description": "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury,
