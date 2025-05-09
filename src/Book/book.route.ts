@@ -5,7 +5,7 @@ import {
   updateABook,
   deleteABook,
 } from "./book.controller.js";
-import { AuthRequest, Auth } from "../Midlleware/auth.midlleware.js";
+import { AuthRequest, Auth } from "../Midllewares/auth.midlleware.js";
 import { bookType } from "./book.model.js";
 const books = Router();
 

@@ -9,7 +9,7 @@ import {
 import { userType } from "./user.model.js";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../App/config.js";
-import { Auth, AuthRequest } from "../Midlleware/auth.midlleware.js";
+import { Auth, AuthRequest } from "../Midllewares/auth.midlleware.js";
 
 // crear el enrutador
 const users = Router();

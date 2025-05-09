@@ -1,6 +1,6 @@
 /** importar las librerias necesarias */
 
-import express from 'express';
+import express, {Request, Response} from 'express';
 import mongoose from 'mongoose';
 import { APP_PORT } from './config.js';
 import users from '../User/user.route.js';
@@ -19,6 +19,10 @@ app.use(cors({
 app.use(users);
 app.use(books);
 
+// fallback
+app.use(async (req: Request, res: Response) => {
+  res.status(404).json({ msg: "Not found" });
+});
 
 //init the server
 app.listen(APP_PORT,()=>{
