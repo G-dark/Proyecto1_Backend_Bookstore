@@ -47,26 +47,26 @@ baseURl/API/users
 
 ---valid input </br>
 ```javascript
-{</br>
-"email":"antonio@hotmail.com",</br>
-"password":"anto123"</br>
-}</br>
+{
+"email":"antonio@hotmail.com",
+"password":"anto123"
+}
 ```
 Create - Post
 baseURl/API/users/create
 
 ---valid input </br>
 ```javascript
-{ </br>
-    "name": "Antonio",</br>
-    "email": "antonio@hotmail.com",</br>
-    "password": "anto123",</br>
-    "rol": "admin",</br>
-    "permissions":  \["update someoneelse",  "delete someoneelse",] ,</br>
-    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSA1zygA3rubv-VK0DrVcQ02Po79kJhXo_A&s",</br>
-    "phone": "+3145645664566",</br>
-    "address": "Cll 23 Kra 34 Barranquilla"</br>
-}</br>
+{ 
+    "name": "Antonio",
+    "email": "antonio@hotmail.com",
+    "password": "anto123",
+    "rol": "admin",
+    "permissions":  \["update someoneelse",  "delete someoneelse",] ,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSA1zygA3rubv-VK0DrVcQ02Po79kJhXo_A&s",
+    "phone": "+3145645664566",
+    "address": "Cll 23 Kra 34 Barranquilla"
+}
 ```
 Delete - Delete
 baseURl/API/users/:email
@@ -76,16 +76,16 @@ baseURl/API/users/:email
 
 ---valid input </br>
 ```javascript
-{</br>
-    "name": "Antonio",</br>
-    "email": "antonio@hotmail.com",</br>
-    "password": "anto321",</br>
-    "rol": "admin",</br>
-    "permissions":  \["update someoneelse",  "delete someoneelse", "create"] ,</br>
-    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSA1zygA3rubv-VK0DrVcQ02Po79kJhXo_A&s",</br>
-    "phone": "+3145645664566",</br>
-    "address": "Cll 23 Kra 34 Barranquilla"</br>
-}</br>
+{
+    "name": "Antonio",
+    "email": "antonio@hotmail.com",
+    "password": "anto321",
+    "rol": "admin",
+    "permissions":  \["update someoneelse",  "delete someoneelse", "create"] ,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSA1zygA3rubv-VK0DrVcQ02Po79kJhXo_A&s",
+    "phone": "+3145645664566",
+    "address": "Cll 23 Kra 34 Barranquilla"
+}
 ```
 # Books
 
@@ -101,19 +101,19 @@ baseURl/API/books
 
 ---valid input </br>
 ```javascript
-{</br>
-  "publishDate": "1953-03-05",</br>
-  "title": "Fahrenheit 451",</br>
-  "author": "Ray Bradbury",</br>
-  "genre": "Novela",</br>
-  "editorial": "Planeta",</br>
-  "amount": 2000,</br>
-  "availableAmount": 50,</br>
-  "description": "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury, publicada en 1953 y </br>
-  considerada una de sus mejores obras.​ La novela presenta una sociedad estadounidense del futuro en la que los libros </br>
-  están prohibidos y existen «bomberos» que queman cualquiera que encuentren.​",</br>
-  "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsB_fnDOrkPWxstj7bpcajLhTAO2eYL7FzAQ&s"</br>
-}</br>
+{
+  "publishDate": "1953-03-05",
+  "title": "Fahrenheit 451",
+  "author": "Ray Bradbury",
+  "genre": "Novela",
+  "editorial": "Planeta",
+  "amount": 2000,
+  "availableAmount": 50,
+  "description": "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury, publicada en 1953 y 
+  considerada una de sus mejores obras.​ La novela presenta una sociedad estadounidense del futuro en la que los libros 
+  están prohibidos y existen «bomberos» que queman cualquiera que encuentren.​",
+  "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsB_fnDOrkPWxstj7bpcajLhTAO2eYL7FzAQ&s"
+}
 
 ```
 Delete - Delete
@@ -125,9 +125,9 @@ baseURl/API/books/:id
 fields that are not going to be updated can be omitted, for example: 
 ---valid input </br>
 ```javascript
-{ </br>
-  "publishDate": "1952-03-05", </br>
-  "description": "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury,</br>
-  publicada en 1953 y considerada una de sus mejores obras.​"</br>
-}</br>
+{ 
+  "publishDate": "1952-03-05", 
+  "description": "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury,
+  publicada en 1953 y considerada una de sus mejores obras.​"
+}
 ```
