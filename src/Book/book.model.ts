@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
 
-const reserveHistorySchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required:true },
-  reserveDate: { type: Date, default: Date.now },
-  returnDate: { type: Date, default: Date.now },
-});
+export type reserveType = {
+  id?:string;
+  user: string;
+  reserveDate: Date;
+  maxTime2return: number;
+  returnDate?: Date;
+};
 export type bookType = {
+  id?:string;
   publishDate: Date;
   title: string;
   author: string;
@@ -17,7 +20,7 @@ export type bookType = {
   image?: string;
   deleteAt?: Date;
   deleted?: boolean;
-  reserveHistory: JSON[];
+  reserveHistory: reserveType[];
 };
 const bookSchema = new mongoose.Schema<bookType>(
   {
@@ -32,7 +35,14 @@ const bookSchema = new mongoose.Schema<bookType>(
     image: { type: String, required: true },
     deleteAt: { type: Date, default: null },
     deleted: { type: Boolean, default: false },
-    reserveHistory: [reserveHistorySchema],
+    reserveHistory: [
+      {
+        user: { type: String, ref: "User", required: true },
+        maxTime2return: { type: Number, default: 15 },
+        reserveDate: { type: Date, required: true },
+        returnDate: { type: Date, default:null },
+      },
+    ],
   },
   { timestamps: true }
 );
