@@ -3,7 +3,7 @@ import { userType } from "./user.model.js";
 import bcrypt from "bcryptjs";
 import { SALT_OR_ROUNDS, PEPPER } from "../App/config.js";
 
-const createUser = async (user: userType): Promise<any> => {
+const createUser = async (user: userType) => {
   try {
     const userWithPepper = user.password + PEPPER;
     user.password = await bcrypt.hash(userWithPepper, SALT_OR_ROUNDS);

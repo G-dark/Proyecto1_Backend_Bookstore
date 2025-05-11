@@ -1,6 +1,6 @@
 import User from "./user.model.js";
 
-const deleteUser = async (email:string):Promise<any> => {
+const deleteUser = async (email:string) => {
   try {
     const res = await User.updateOne(
       { email: email},

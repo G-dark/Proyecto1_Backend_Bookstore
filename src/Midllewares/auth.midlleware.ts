@@ -8,6 +8,7 @@ export interface AuthRequest extends Request {
 }
 export const Auth: any = () => {
   return (req: AuthRequest, res: Response, next: NextFunction) => {
+
     const clientIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
     let ip;
     if (Array.isArray(clientIp)) {
@@ -19,6 +20,9 @@ export const Auth: any = () => {
 
     const authHeader = req.headers["authorization"];
 
+    if (tokens.length == 0) {
+      return res.status(404).json({ error: "token no suministrado" });
+    }
     if (authHeader) {
       token_acc = authHeader.split(" ")[1];
     } else {
@@ -36,7 +40,7 @@ export const Auth: any = () => {
     }
 
     if (!token_acc) {
-      return res.status(404).json({ failed: "token no suministrado" });
+      return res.status(404).json({ error: "token no suministrado" });
     }
 
     let decoded;
@@ -52,7 +56,7 @@ export const Auth: any = () => {
       }
     } catch (error) {
       console.error("Ha ocurrido un error", error);
-      return res.json({ failed: "token invalido o expirado" });
+      return res.json({ error: "token invalido o expirado" });
     }
   };
 };

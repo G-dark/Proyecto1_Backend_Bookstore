@@ -4,6 +4,8 @@ import {
   registerBook,
   updateABook,
   deleteABook,
+  reserveBook,
+  returnBook,
 } from "./book.controller.js";
 import { AuthRequest, Auth } from "../Midllewares/auth.midlleware.js";
 import { bookType } from "./book.model.js";
@@ -12,24 +14,29 @@ const books = Router();
 const getBookByID: any = async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await getAllBooks(id);
-  return res.json(result);
+  return typeof result == "string"
+    ? res.status(444).json(result)
+    : res.json(result);
 };
 
 const getBooksByAmount: any = async (req: Request, res: Response) => {
-
   const { genero, fechaPublicacion, editorial, autor, nombre, disponibilidad } =
     req.query;
 
   const result = await getAllBooks(
     undefined,
-    genero as string || undefined,
+    (genero as string) || undefined,
     fechaPublicacion ? new Date(fechaPublicacion as string) : undefined,
-    editorial as string || undefined,
-    autor as string|| undefined,
-    nombre as string || undefined,
-    (disponibilidad as string) == "true" || (disponibilidad as string) == "" || undefined
+    (editorial as string) || undefined,
+    (autor as string) || undefined,
+    (nombre as string) || undefined,
+    (disponibilidad as string) == "true" ||
+      (disponibilidad as string) == "" ||
+      undefined
   );
-  return res.json(result);
+  return typeof result == "string"
+    ? res.status(444).json(result)
+    : res.json(result);
 };
 
 const makeABook: any = async (req: AuthRequest, res: Response) => {
@@ -77,7 +84,7 @@ const makeABook: any = async (req: AuthRequest, res: Response) => {
       })
     ) {
       result = await registerBook(book);
-      return res.json(result);
+      return result.success ? res.json(result) : res.status(444).json(result);
     }
   } else {
     return res.status(401).json({ error: "permisos insuficientes" });
@@ -132,7 +139,7 @@ const editABook: any = async (req: AuthRequest, res: Response) => {
       })
     ) {
       result = await updateABook(book, id);
-      return res.json(result);
+      return result.success ? res.json(result) : res.status(444).json(result);
     }
   } else {
     return res.status(401).json({ error: "permisos insuficientes" });
@@ -161,7 +168,60 @@ const killABook: any = async (req: AuthRequest, res: Response) => {
       })
     ) {
       result = await deleteABook(id);
-      return res.json(result);
+      return result.success ? res.json(result) : res.status(444).json(result);
+    }
+  } else {
+    return res.status(401).json({ error: "permisos insuficientes" });
+  }
+};
+
+const returnABook: any = async (req: AuthRequest, res: Response) => {
+  const { id,idreserva } = req.params;
+
+  let result;
+  if (req.user) {
+    if (
+      req.user.permissions.every((perm) => {
+        return perm != "reserve/return books";
+      })
+    ) {
+      return res.status(401).json({ error: "permisos insuficientes" });
+    }
+
+    if (
+      req.user.permissions.some((perm) => {
+        return perm == "reserve/return books";
+      })
+    ) {
+      result = await returnBook(id,idreserva, req.user.email);
+      return result.success ? res.json(result) : res.status(444).json(result);
+    }
+  } else {
+    return res.status(401).json({ error: "permisos insuficientes" });
+  }
+};
+
+const borrowABook: any = async (req: AuthRequest, res: Response) => {
+  const { id, plazo } = req.params;
+
+  let result;
+  if (req.user) {
+    if (
+      req.user.permissions.every((perm) => {
+        return perm != "reserve/return books";
+      })
+    ) {
+      return res.status(401).json({ error: "permisos insuficientes" });
+    }
+
+    if (
+      req.user.permissions.some((perm) => {
+        return perm == "reserve/return books";
+      })
+    ) {
+      result = await reserveBook(id, req.user.email, Number(plazo));
+
+      return result.success ? res.json(result) : res.status(444).json(result);
     }
   } else {
     return res.status(401).json({ error: "permisos insuficientes" });
@@ -172,6 +232,8 @@ books.get("/API/books/:id", getBookByID);
 books.get("/API/books", getBooksByAmount);
 books.post("/API/books", Auth(), makeABook);
 books.patch("/API/books/:id", Auth(), editABook);
+books.patch("/API/books/reserve/:id/:plazo", Auth(), borrowABook);
+books.patch("/API/books/return/:id/:idreserva", Auth(), returnABook);
 books.delete("/API/books/:id", Auth(), killABook);
 
 export default books;

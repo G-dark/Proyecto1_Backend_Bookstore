@@ -15,12 +15,12 @@ import { Auth, AuthRequest } from "../Midllewares/auth.midlleware.js";
 const users = Router();
 
 type sessionType = {
-   Ip: string;
-   token: string;
-   entryDate: number;
-}
+  Ip: string;
+  token: string;
+  entryDate: number;
+};
 
-// inicializa el token en vacio
+// inicializa los tokens en vacio
 let tokens: sessionType[] = [];
 
 // declaracion de endpoints
@@ -32,9 +32,9 @@ const loginUser: any = async (req: Request, res: Response) => {
     let ip;
 
     if (Array.isArray(clientIp)) {
-       ip = clientIp[0];
+      ip = clientIp[0];
     } else {
-      ip = clientIp || "127.0.0.1"
+      ip = clientIp || "127.0.0.1";
     }
 
     const token = jwt.sign(
@@ -51,7 +51,7 @@ const loginUser: any = async (req: Request, res: Response) => {
       token: token,
     });
 
-    return res.json({user, token});
+    return res.json({ succes: "Usuario logueado", token });
   } else {
     return res.status(404).json({ error: "usuario no encontrado" });
   }
@@ -73,7 +73,7 @@ const registerAUser: any = async (req: Request, res: Response) => {
     userHistory: [],
   };
   const result = await registerUser(user);
-  return res.json(result);
+  return result.success ? res.json(result) : res.status(444).json(result);
 };
 
 const editAUser: any = async (req: AuthRequest, res: Response) => {
@@ -97,18 +97,26 @@ const editAUser: any = async (req: AuthRequest, res: Response) => {
 
   if (req.user) {
     const emailAuthed = req.user.email;
-    if (
-      (req.user.rol == "admin" || req.user.rol == "user") &&
-      emailAuthed == emailSearched
-    ) {
+    const isSameEmail = emailAuthed == emailSearched;
+    let isSameEmails = true;
+    let equals = false;
+    if (email) {
+       isSameEmails = email == emailSearched;
+       equals = isSameEmail && isSameEmails;
+    } else {
+      equals = isSameEmail
+    }
+
+
+    if (equals) {
       result = await updateAUser(emailSearched, user);
-      return res.json(result);
+      return result.success ? res.json(result) : res.status(444).json(result);
     }
 
     if (
       (req.user.rol !== "admin" && emailAuthed !== emailSearched) ||
       (req.user.rol == "admin" &&
-        emailAuthed !== email &&
+        emailAuthed !== emailSearched &&
         req.user.permissions.every((perm) => {
           return perm != "update someoneelse";
         }))
@@ -118,14 +126,17 @@ const editAUser: any = async (req: AuthRequest, res: Response) => {
 
     if (
       req.user.rol == "admin" &&
-      emailAuthed !== emailSearched &&
+      emailAuthed !== emailSearched && isSameEmails &&
       req.user.permissions.some((perm) => {
         return perm == "update someoneelse";
       })
     ) {
       result = await updateAUser(emailSearched, user);
-      return res.json(result);
+      return result.success ? res.json(result) : res.status(444).json(result);
     }
+
+     return res.status(444).json({ error: "El email de una cuenta no puede ser modificado" });
+
   } else {
     return res.status(401).json({ error: "permisos insuficientes" });
   }
@@ -137,12 +148,9 @@ const killAUser: any = async (req: AuthRequest, res: Response) => {
   if (req.user) {
     const emailAuthed = req.user.email;
 
-    if (
-      req.user.rol == "admin" ||
-      (req.user.rol == "user" && emailAuthed == email)
-    ) {
+    if (emailAuthed == email) {
       result = await deleteAUser(email);
-      return res.json(result);
+      return result.success ? res.json(result) : res.status(444).json(result);
     }
 
     if (
@@ -164,7 +172,7 @@ const killAUser: any = async (req: AuthRequest, res: Response) => {
       })
     ) {
       result = await deleteAUser(email);
-      return res.json(result);
+      return result.success ? res.json(result) : res.status(444).json(result);
     }
   } else {
     return res.status(401).json({ error: "permisos insuficientes" });
