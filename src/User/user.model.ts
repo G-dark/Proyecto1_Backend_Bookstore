@@ -19,12 +19,12 @@ export type userType = {
   image?: string;
   phone: string;
   address: string;
-  userHistory: userHistoryType[];
+  userHistory?: userHistoryType[];
 };
 
 const userSchema = new mongoose.Schema<userType>(
   {
-    name: { type: String, required: true },
+    name: { type: String, default: "" },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     rol: { type: String, enum: ["admin", "user"], default: "user" },
@@ -32,8 +32,8 @@ const userSchema = new mongoose.Schema<userType>(
     deleteAt: { type: Date, default: null },
     deleted: { type: Boolean, default: false },
     image: { type: String, default: null },
-    phone: { type: String, required: true },
-    address: { type: String, required: true },
+    phone: { type: String, default: "" },
+    address: { type: String, default: ""  },
     userHistory: [
       {
         book: { type: mongoose.Schema.Types.ObjectId, ref: "Book" },

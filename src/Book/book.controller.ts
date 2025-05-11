@@ -1,5 +1,5 @@
 import { getUser } from "../User/read.user.action.js";
-import { updateUserIgnorePass } from "../User/update.user.action.js";
+import updateUser from "../User/update.user.action.js";
 import { updateAUser } from "../User/user.controller.js";
 import { userType } from "../User/user.model.js";
 import { bookType } from "./book.model.js";
@@ -54,7 +54,7 @@ const reserveBook = async (id: string, email: string, plazo: number) => {
       const message = await updateBook(id, book);
       const bookUpdated = await getBooks(query);
       const book2 = (book2Updated as bookType[])[0];
-      user.userHistory.push({
+      user.userHistory!.push({
         book: book.id!,
         reserveDate: new Date(now),
         reserveID: book2.reserveHistory.find((reserve) => {
@@ -65,7 +65,7 @@ const reserveBook = async (id: string, email: string, plazo: number) => {
         })!.id,
       });
 
-      const message2 = await updateUserIgnorePass(email, user);
+      const message2 = await updateUser(email, user);
 
       return message.success && message2.success
         ? { success: "Libro reservado" }
@@ -79,7 +79,7 @@ const reserveBook = async (id: string, email: string, plazo: number) => {
   }
 };
 
-const returnBook = async (id:string, reserveid: string, email: string) => {
+const returnBook = async (id: string, reserveid: string, email: string) => {
   if (await thisBookExistsByID(id)) {
     const query: any = {};
     query._id = id;
@@ -89,14 +89,17 @@ const returnBook = async (id:string, reserveid: string, email: string) => {
     const user = (user2Reserve as userType[])[0];
     ++book.availableAmount;
     const now = Date.now();
-    const userHistoryIndex = user.userHistory.findIndex((history) => {
+    const userHistoryIndex = user.userHistory!.findIndex((history) => {
       return history.reserveID == reserveid && history.book == id;
     });
-
-    if (user.userHistory[userHistoryIndex] && user.userHistory[userHistoryIndex].returnDate == null) {
-      user.userHistory[userHistoryIndex].returnDate = new Date(now);
-      const fecha1 = new Date(user.userHistory[userHistoryIndex].reserveDate);
-      const fecha2 = new Date(user.userHistory[userHistoryIndex].reserveDate);
+    console.log(userHistoryIndex,user.userHistory);
+    if (
+      user.userHistory![userHistoryIndex] &&
+      user.userHistory![userHistoryIndex].returnDate == null
+    ) {
+      user.userHistory![userHistoryIndex].returnDate = new Date(now);
+      const fecha1 = new Date(user.userHistory![userHistoryIndex].reserveDate);
+      const fecha2 = new Date(user.userHistory![userHistoryIndex].reserveDate);
 
       const diferenciaMs = Math.abs(fecha1.getTime() - fecha2.getTime());
 
@@ -104,19 +107,15 @@ const returnBook = async (id:string, reserveid: string, email: string) => {
       const diferenciaDias = Math.ceil(diferenciaMs / (1000 * 60 * 60 * 24));
 
       const bookReserveIndex = book.reserveHistory.findIndex((reserve) => {
-        return (
-          reserve.user == email &&
-          new Date(user.userHistory[userHistoryIndex].reserveDate).getTime() ===
-            new Date(reserve.reserveDate).getTime()
-        );
+        return reserve.user == email && reserve.id == reserveid;
       });
       const plazo = book.reserveHistory[bookReserveIndex].maxTime2return;
-      user.userHistory[userHistoryIndex].returnOutOfDate =
+      user.userHistory![userHistoryIndex].returnOutOfDate =
         diferenciaDias > plazo ? diferenciaDias : 0;
 
       book.reserveHistory[bookReserveIndex].returnDate = new Date(now);
 
-      const message2 = await updateUserIgnorePass(email, user);
+      const message2 = await updateUser(email, user);
       const message = await updateBook(id, book);
 
       return message.success && message2.success

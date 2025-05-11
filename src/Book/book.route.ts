@@ -83,8 +83,24 @@ const makeABook: any = async (req: AuthRequest, res: Response) => {
         return perm == "create books";
       })
     ) {
-      result = await registerBook(book);
-      return result.success ? res.json(result) : res.status(444).json(result);
+      if (
+        publishDate &&
+        title &&
+        author &&
+        genre &&
+        editorial &&
+        amount &&
+        availableAmount &&
+        description
+      ) {
+        result = await registerBook(book);
+        return result.success ? res.json(result) : res.status(444).json(result);
+      } else {
+        return res.status(444).json({
+          error:
+            "Los siguientes campos son requeridos: publishDate, title, author, genre, editorial, amountm availableAnount, description ",
+        });
+      }
     }
   } else {
     return res.status(401).json({ error: "permisos insuficientes" });
@@ -176,7 +192,7 @@ const killABook: any = async (req: AuthRequest, res: Response) => {
 };
 
 const returnABook: any = async (req: AuthRequest, res: Response) => {
-  const { id,idreserva } = req.params;
+  const { idbook, idreserva } = req.params;
 
   let result;
   if (req.user) {
@@ -193,7 +209,7 @@ const returnABook: any = async (req: AuthRequest, res: Response) => {
         return perm == "reserve/return books";
       })
     ) {
-      result = await returnBook(id,idreserva, req.user.email);
+      result = await returnBook(idbook, idreserva, req.user.email);
       return result.success ? res.json(result) : res.status(444).json(result);
     }
   } else {
@@ -233,7 +249,7 @@ books.get("/API/books", getBooksByAmount);
 books.post("/API/books", Auth(), makeABook);
 books.patch("/API/books/:id", Auth(), editABook);
 books.patch("/API/books/reserve/:id/:plazo", Auth(), borrowABook);
-books.patch("/API/books/return/:id/:idreserva", Auth(), returnABook);
+books.patch("/API/books/return/:idbook/:idreserva", Auth(), returnABook);
 books.delete("/API/books/:id", Auth(), killABook);
 
 export default books;
