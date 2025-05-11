@@ -26,7 +26,8 @@ let tokens: sessionType[] = [];
 // declaracion de endpoints
 const loginUser: any = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  const user = (await login(email, password))[0] as userType;
+  const message = await login(email, password);
+  const user = message[0] as userType;
   if (user) {
     const clientIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
     let ip;
@@ -53,7 +54,7 @@ const loginUser: any = async (req: Request, res: Response) => {
 
     return res.json({ succes: "Usuario logueado", token });
   } else {
-    return res.status(404).json({ error: "usuario no encontrado" });
+    return res.status(444).json(message);
   }
 };
 
@@ -72,13 +73,26 @@ const registerAUser: any = async (req: Request, res: Response) => {
     address,
     userHistory: [],
   };
-  const result = await registerUser(user);
-  return result.success ? res.json(result) : res.status(444).json(result);
+  if (email && password) {
+    const result = await registerUser(user);
+    return result.success ? res.json(result) : res.status(444).json(result);
+  } else {
+    res.status(444).json({ error: "email y contraseña son requeridos" });
+  }
 };
 
 const editAUser: any = async (req: AuthRequest, res: Response) => {
-  const { name, email, password, rol, permissions, image, phone, address } =
-    req.body;
+  const {
+    name,
+    email,
+    password,
+    rol,
+    permissions,
+    image,
+    phone,
+    address,
+    userHistory,
+  } = req.body;
 
   const { emailSearched } = req.params;
 
@@ -91,7 +105,7 @@ const editAUser: any = async (req: AuthRequest, res: Response) => {
     image,
     phone,
     address,
-    userHistory: [],
+    userHistory,
   };
   let result;
 
@@ -100,13 +114,13 @@ const editAUser: any = async (req: AuthRequest, res: Response) => {
     const isSameEmail = emailAuthed == emailSearched;
     let isSameEmails = true;
     let equals = false;
+    
     if (email) {
-       isSameEmails = email == emailSearched;
-       equals = isSameEmail && isSameEmails;
+      isSameEmails = email == emailSearched;
+      equals = isSameEmail && isSameEmails;
     } else {
-      equals = isSameEmail
+      equals = isSameEmail;
     }
-
 
     if (equals) {
       result = await updateAUser(emailSearched, user);
@@ -126,7 +140,8 @@ const editAUser: any = async (req: AuthRequest, res: Response) => {
 
     if (
       req.user.rol == "admin" &&
-      emailAuthed !== emailSearched && isSameEmails &&
+      emailAuthed !== emailSearched &&
+      isSameEmails &&
       req.user.permissions.some((perm) => {
         return perm == "update someoneelse";
       })
@@ -135,8 +150,9 @@ const editAUser: any = async (req: AuthRequest, res: Response) => {
       return result.success ? res.json(result) : res.status(444).json(result);
     }
 
-     return res.status(444).json({ error: "El email de una cuenta no puede ser modificado" });
-
+    return res
+      .status(444)
+      .json({ error: "El email de una cuenta no puede ser modificado" });
   } else {
     return res.status(401).json({ error: "permisos insuficientes" });
   }
