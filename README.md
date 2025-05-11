@@ -14,7 +14,13 @@ git clone <url-of-this-repository>
 ```
 
 After that you must make a .env file following the .env.example
-
+```dotenv
+APP_PORT=3000
+MONGO_URI=YOUR_CONECTION
+SALT_OR_ROUNDS=20
+JWT_SECRET=YOUR_SECRET
+PEPPER=YOUR_PEPPER
+```
 
 ## Usage
 
@@ -68,6 +74,14 @@ baseURl/API/users/create
     "address": "Cll 23 Kra 34 Barranquilla"
 }
 ```
+
+---valid input required fields </br>
+```json
+{ 
+    "email": "antonio@hotmail.com",
+    "password": "anto123"
+}
+```
 Delete - Delete
 baseURl/API/users/:email
 
@@ -87,6 +101,16 @@ baseURl/API/users/:email
     "address": "Cll 23 Kra 34 Barranquilla"
 }
 ```
+---valid input </br>
+```json
+{
+    "permissions":  ["update someoneelse",  "delete someoneelse", "create"] ,
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSA1zygA3rubv-VK0DrVcQ02Po79kJhXo_A&s",
+    "phone": "+3145645664566",
+    "address": "Cll 23 Kra 34 Barranquilla"
+}
+```
+
 # Books
 
 Read - Get by id
@@ -100,6 +124,7 @@ Create - Post
 baseURl/API/books
 
 ---valid input </br>
+note: image isn't required
 ```json
 {
   "publishDate": "1953-03-05",
@@ -110,7 +135,7 @@ baseURl/API/books
   "amount": 2000,
   "availableAmount": 50,
   "description":  "Fahrenheit 451 es una novela distópica del escritor estadounidense Ray Bradbury, publicada en 1953...",
-  "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsB_fnDOrkPWxstj7bpcajLhTAO2eYL7FzAQ&s"
+  "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsB_fnDOrkPWxstj7bpcajLhTAO2eYL7FzAQ&s" 
 }
 
 ```
