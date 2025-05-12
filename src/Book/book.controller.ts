@@ -92,7 +92,7 @@ const returnBook = async (id: string, reserveid: string, email: string) => {
     const userHistoryIndex = user.userHistory!.findIndex((history) => {
       return history.reserveID == reserveid && history.book == id;
     });
-    console.log(userHistoryIndex,user.userHistory);
+    
     if (
       user.userHistory![userHistoryIndex] &&
       user.userHistory![userHistoryIndex].returnDate == null
