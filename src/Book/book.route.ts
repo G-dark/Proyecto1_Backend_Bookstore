@@ -14,7 +14,8 @@ const books = Router();
 const getBookByID: any = async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await getAllBooks(id);
-  return typeof result == "string"
+
+  return "error" in result
     ? res.status(444).json(result)
     : res.json(result);
 };
@@ -34,7 +35,7 @@ const getBooksByAmount: any = async (req: Request, res: Response) => {
       (disponibilidad as string) == "" ||
       undefined
   );
-  return typeof result == "string"
+  return "error" in result
     ? res.status(444).json(result)
     : res.json(result);
 };
