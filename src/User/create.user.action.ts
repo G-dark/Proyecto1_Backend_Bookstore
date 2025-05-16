@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 import { SALT_OR_ROUNDS, PEPPER } from "../App/config.js";
 
 const createUser = async (user: userType) => {
-  try {
     const userWithPepper = user.password + PEPPER;
     user.password = await bcrypt.hash(userWithPepper, SALT_OR_ROUNDS);
     const result = await User.find({ email: user.email });
@@ -27,10 +26,7 @@ const createUser = async (user: userType) => {
         return { error: "Usuario no registrado" };
       }
     }
-  } catch (error) {
-    console.error("Hubo un error", error);
-    return { error: "Error al registrar usuario" };
-  }
+
 };
 
 export default createUser;

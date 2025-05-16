@@ -12,32 +12,47 @@ import getBooks, {
 import { updateBook } from "./update.book.action.js";
 
 const registerBook = async (book: bookType) => {
-  if (!(await thisBookExists(book.title, book.author))) {
-    return await createBook(book);
-  } else {
-    return { error: "Ese libro ya existe" };
+  try {
+    if (!(await thisBookExists(book.title, book.author))) {
+      return await createBook(book);
+    } else {
+      return { error: "Ese libro ya existe" };
+    }
+  } catch (error) {
+    console.error("Hubo un error", error);
+    return { error: "Error al crear el libro" };
   }
 };
 
 const deleteABook = async (id: string) => {
-  if (await thisBookExistsByID(id)) {
-    return await deleteBook(id);
-  } else {
-    return { error: "Libro inexistente" };
+  try {
+    if (await thisBookExistsByID(id)) {
+      return await deleteBook(id);
+    } else {
+      return { error: "Libro inexistente" };
+    }
+  } catch (error) {
+    console.error("Hubo un error", error);
+    return { error: "Error al eliminar el libro" };
   }
 };
 
 const updateABook = async (book: bookType, id: string) => {
-  if (await thisBookExistsByID(id)) {
-    return await updateBook(id, book);
-  } else {
-    return { error: "Libro inexistente" };
+  try {
+    if (await thisBookExistsByID(id)) {
+      return await updateBook(id, book);
+    } else {
+      return { error: "Libro inexistente" };
+    }
+  } catch (error) {
+    console.error("hubo un error", error);
+    return { error: "Error al actualizar el libro" };
   }
 };
 
 const reserveBook = async (id: string, email: string, plazo: number) => {
-  if (await thisBookExistsByID(id)) {
-    try {
+  try {
+    if (await thisBookExistsByID(id)) {
       const query: any = {};
       query._id = id;
       const book2Updated = await getBooks(query);
@@ -70,62 +85,71 @@ const reserveBook = async (id: string, email: string, plazo: number) => {
       return message.success && message2.success
         ? { success: "Libro reservado" }
         : { error: "Libro no reservado" };
-    } catch (error) {
-      console.error("Error obtenido", error);
-      return { error: "Error en la reserva" };
+    } else {
+      return { error: "Libro inexistente" };
     }
-  } else {
-    return { error: "Libro inexistente" };
+  } catch (error) {
+    console.error("Error obtenido", error);
+    return { error: "Error en la reserva" };
   }
 };
 
 const returnBook = async (id: string, reserveid: string, email: string) => {
-  if (await thisBookExistsByID(id)) {
-    const query: any = {};
-    query._id = id;
-    const book2Updated = await getBooks(query);
-    const user2Reserve = await getUser(email);
-    const book = (book2Updated as bookType[])[0];
-    const user = (user2Reserve as userType[])[0];
-    ++book.availableAmount;
-    const now = Date.now();
-    const userHistoryIndex = user.userHistory!.findIndex((history) => {
-      return history.reserveID == reserveid && history.book == id;
-    });
-    
-    if (
-      user.userHistory![userHistoryIndex] &&
-      user.userHistory![userHistoryIndex].returnDate == null
-    ) {
-      user.userHistory![userHistoryIndex].returnDate = new Date(now);
-      const fecha1 = new Date(user.userHistory![userHistoryIndex].reserveDate);
-      const fecha2 = new Date(user.userHistory![userHistoryIndex].reserveDate);
-
-      const diferenciaMs = Math.abs(fecha1.getTime() - fecha2.getTime());
-
-      // Convertir milisegundos a días
-      const diferenciaDias = Math.ceil(diferenciaMs / (1000 * 60 * 60 * 24));
-
-      const bookReserveIndex = book.reserveHistory.findIndex((reserve) => {
-        return reserve.user == email && reserve.id == reserveid;
+  try {
+    if (await thisBookExistsByID(id)) {
+      const query: any = {};
+      query._id = id;
+      const book2Updated = await getBooks(query);
+      const user2Reserve = await getUser(email);
+      const book = (book2Updated as bookType[])[0];
+      const user = (user2Reserve as userType[])[0];
+      ++book.availableAmount;
+      const now = Date.now();
+      const userHistoryIndex = user.userHistory!.findIndex((history) => {
+        return history.reserveID == reserveid && history.book == id;
       });
-      const plazo = book.reserveHistory[bookReserveIndex].maxTime2return;
-      user.userHistory![userHistoryIndex].returnOutOfDate =
-        diferenciaDias > plazo ? diferenciaDias : 0;
 
-      book.reserveHistory[bookReserveIndex].returnDate = new Date(now);
+      if (
+        user.userHistory![userHistoryIndex] &&
+        user.userHistory![userHistoryIndex].returnDate == null
+      ) {
+        user.userHistory![userHistoryIndex].returnDate = new Date(now);
+        const fecha1 = new Date(
+          user.userHistory![userHistoryIndex].reserveDate
+        );
+        const fecha2 = new Date(
+          user.userHistory![userHistoryIndex].reserveDate
+        );
 
-      const message2 = await updateUser(email, user);
-      const message = await updateBook(id, book);
+        const diferenciaMs = Math.abs(fecha1.getTime() - fecha2.getTime());
 
-      return message.success && message2.success
-        ? { success: "Libro retornado" }
-        : { error: "Libro no retornado" };
+        // Convertir milisegundos a días
+        const diferenciaDias = Math.ceil(diferenciaMs / (1000 * 60 * 60 * 24));
+
+        const bookReserveIndex = book.reserveHistory.findIndex((reserve) => {
+          return reserve.user == email && reserve.id == reserveid;
+        });
+        const plazo = book.reserveHistory[bookReserveIndex].maxTime2return;
+        user.userHistory![userHistoryIndex].returnOutOfDate =
+          diferenciaDias > plazo ? diferenciaDias : 0;
+
+        book.reserveHistory[bookReserveIndex].returnDate = new Date(now);
+
+        const message2 = await updateUser(email, user);
+        const message = await updateBook(id, book);
+
+        return message.success && message2.success
+          ? { success: "Libro retornado" }
+          : { error: "Libro no retornado" };
+      } else {
+        return { error: "libro ya retornado o reserva inexistente" };
+      }
     } else {
-      return { error: "libro ya retornado o reserva inexistente" };
+      return { error: "Libro inexistente" };
     }
-  } else {
-    return { error: "Libro inexistente" };
+  } catch (error) {
+    console.error("Hubo un error", error);
+    return { error: "Error al regresar el libor" };
   }
 };
 
@@ -139,35 +163,39 @@ const getAllBooks = async (
   disponibilidad?: boolean
 ) => {
   const query: any = {};
-
-  if (id) {
-    query._id = id;
-  }
-  if (genre) {
-    query.genre = genre;
-  }
-  if (pusblishDate) {
-    query.publishDate = pusblishDate;
-  }
-  if (editorial) {
-    query.editorial = editorial;
-  }
-  if (author) {
-    query.author = author;
-  }
-  if (disponibilidad) {
-    query.availableAmount = { $gt: 0 };
-  } else {
-    if (disponibilidad !== undefined) {
-      query.availableAmount = { $eq: 0 };
+  try {
+    if (id) {
+      query._id = id;
     }
-  }
-  if (title) {
-    query.title = title;
-  }
-  query.deleted = false;
+    if (genre) {
+      query.genre = genre;
+    }
+    if (pusblishDate) {
+      query.publishDate = pusblishDate;
+    }
+    if (editorial) {
+      query.editorial = editorial;
+    }
+    if (author) {
+      query.author = author;
+    }
+    if (disponibilidad) {
+      query.availableAmount = { $gt: 0 };
+    } else {
+      if (disponibilidad !== undefined) {
+        query.availableAmount = { $eq: 0 };
+      }
+    }
+    if (title) {
+      query.title = title;
+    }
+    query.deleted = false;
 
-  return await getBooks(query);
+    return await getBooks(query);
+  } catch (error) {
+    console.error("Hubo un error", error);
+    return { error: "Error al obtener los libros" };
+  }
 };
 
 export {

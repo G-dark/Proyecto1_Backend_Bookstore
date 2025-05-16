@@ -5,37 +5,55 @@ import updateUser from "./update.user.action.js";
 import loginUser, { thisUserExists } from "./read.user.action.js";
 
 const registerUser = async (user: userType) => {
-  if (!(await thisUserExists(user.email))) {
-    return await createUser(user);
-  } else {
-    return { error: "Ese usuario ya existe" };
+  try {
+    if (!(await thisUserExists(user.email))) {
+      return await createUser(user);
+    } else {
+      return { error: "Ese usuario ya existe" };
+    }
+  } catch (error) {
+    console.error("Hubo un error", error);
+    return { error: "Error al registrar usuario" };
   }
 };
 
 const deleteAUser = async (email: string) => {
-  if (await thisUserExists(email)) {
-    return await deleteUser(email);
-  } else {
-    return { error: "usuario inexistente" };
+  try {
+    if (await thisUserExists(email)) {
+      return await deleteUser(email);
+    } else {
+      return { error: "usuario inexistente" };
+    }
+  } catch (error) {
+    console.error("Hubo un error", error);
+    return { error: "Error al eliminar usuario" };
   }
 };
 
 const updateAUser = async (email: string, user: userType) => {
-  if (await thisUserExists(email)) {
-    return await updateUser(email, user);
-  } else {
-    return { error: "usuario inexistente" };
+  try {
+    if (await thisUserExists(email)) {
+      return await updateUser(email, user);
+    } else {
+      return { error: "usuario inexistente" };
+    }
+  } catch (error) {
+    console.error("hubo un error", error);
+    return { error: "Error al actualizar usuario" };
   }
 };
 
 const login = async (email: string, password: string) => {
-  if (await thisUserExists(email)) {
-    return await loginUser(email, password);
-  } else {
-    return { error: "usuario inexistente" };
+  try {
+    if (await thisUserExists(email)) {
+      return await loginUser(email, password);
+    } else {
+      return { error: "usuario inexistente" };
+    }
+  } catch (error) {
+    console.error("Hubo un error", error);
+    return { error: "Error al obtener los usuarios" };
   }
 };
 
-
-
-export {login, updateAUser,deleteAUser,registerUser};
+export { login, updateAUser, deleteAUser, registerUser };
